@@ -40,7 +40,10 @@ const routes = Book => {
       book.author = req.body.author;
       book.genre = req.body.genre;
       book.read = req.body.read;
-      book.save();
+      book.save(err => {
+        if (err) return res.send(err);
+        return res.json(book);
+      });
 
       return res.status(200).json(book);
     })
