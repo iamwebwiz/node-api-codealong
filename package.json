@@ -1,0 +1,49 @@
+{
+  "name": "node-api-codealong",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamwebwiz/node-api-codealong.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Ezekiel Oladejo <iamwebwiz@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamwebwiz/node-api-codealong/issues"
+  },
+  "homepage": "https://github.com/iamwebwiz/node-api-codealong#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.6.11"
+  },
+  "devDependencies": {
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules"
+    ],
+    "delay": "500",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 4000
+    }
+  }
+}
