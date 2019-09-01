@@ -59,9 +59,16 @@ const routes = Book => {
         const value = item[1];
         book[key] = value;
       });
+
       req.book.save(err => {
         if (err) return res.send(err);
         return res.json(book);
+      });
+    })
+    .delete((req, res) => {
+      req.book.remove(err => {
+        if (err) return res.send(err);
+        return res.sendStatus(204);
       });
     });
 
