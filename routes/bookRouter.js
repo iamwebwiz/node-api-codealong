@@ -2,22 +2,14 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable arrow-parens */
 const express = require('express');
+const BooksController = require('../controllers/BooksController');
 
 const bookRouter = express.Router();
 
 const routes = Book => {
-  bookRouter.route('/books').get((req, res) => {
-    const query = {};
+  const controller = BooksController(Book);
 
-    if (req.query.author) {
-      query.author = req.query.author;
-    }
-
-    Book.find(query, (err, books) => {
-      if (err) return res.send(err);
-      return res.json(books);
-    });
-  });
+  bookRouter.route('/books').get(controller.get);
 
   // book router middleware
   bookRouter.use('/books/:bookId', (req, res, next) => {
@@ -72,11 +64,7 @@ const routes = Book => {
       });
     });
 
-  bookRouter.route('/books').post((req, res) => {
-    const book = new Book(req.body);
-    book.save();
-    return res.status(201).json(book);
-  });
+  bookRouter.route('/books').post(controller.post);
 
   return bookRouter;
 };
