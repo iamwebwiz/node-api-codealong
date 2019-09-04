@@ -25,7 +25,13 @@ const routes = Book => {
 
   bookRouter
     .route('/books/:bookId')
-    .get((req, res) => res.json(req.book))
+    .get((req, res) => {
+      const returnBook = req.book.toJSON();
+      returnBook.links = {};
+      const author = req.book.author.replace(' ', '%20');
+      returnBook.links.FilterByThisAuthor = `http://${req.headers.host}/api/books?author=${author}`;
+      res.json(returnBook);
+    })
     .put((req, res) => {
       const { book } = req;
       book.title = req.body.title;
