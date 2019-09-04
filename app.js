@@ -3,9 +3,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
-const db = mongoose.connect('mongodb://localhost/booksApi', {
-  useNewUrlParser: true,
-});
+
+if (process.env.ENV === 'test') {
+  const db = mongoose.connect('mongodb://localhost/booksApi-test', { useNewUrlParser: true });
+} else {
+  const db = mongoose.connect('mongodb://localhost/booksApi', { useNewUrlParser: true });
+}
 const Book = require('./models/Book');
 const bookRouter = require('./routes/bookRouter')(Book);
 
@@ -20,4 +23,6 @@ app.get('/', (req, res) => {
   res.send('Welcome to my API');
 });
 
-app.listen(port, () => console.log(`App running on port ${port}`));
+app.server = app.listen(port, () => console.log(`App running on port ${port}`));
+
+module.exports = app;

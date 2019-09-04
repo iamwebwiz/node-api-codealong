@@ -2,22 +2,14 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable arrow-parens */
 const express = require('express');
+const BooksController = require('../controllers/BooksController');
 
 const bookRouter = express.Router();
 
 const routes = Book => {
-  bookRouter.route('/books').get((req, res) => {
-    const query = {};
+  const controller = BooksController(Book);
 
-    if (req.query.author) {
-      query.author = req.query.author;
-    }
-
-    Book.find(query, (err, books) => {
-      if (err) return res.send(err);
-      return res.json(books);
-    });
-  });
+  bookRouter.route('/books').get(controller.get);
 
   // book router middleware
   bookRouter.use('/books/:bookId', (req, res, next) => {
@@ -33,7 +25,13 @@ const routes = Book => {
 
   bookRouter
     .route('/books/:bookId')
-    .get((req, res) => res.json(req.book))
+    .get((req, res) => {
+      const returnBook = req.book.toJSON();
+      returnBook.links = {};
+      const author = req.book.author.replace(' ', '%20');
+      returnBook.links.FilterByThisAuthor = `http://${req.headers.host}/api/books?author=${author}`;
+      res.json(returnBook);
+    })
     .put((req, res) => {
       const { book } = req;
       book.title = req.body.title;
@@ -72,11 +70,7 @@ const routes = Book => {
       });
     });
 
-  bookRouter.route('/books').post((req, res) => {
-    const book = new Book(req.body);
-    book.save();
-    return res.status(201).json(book);
-  });
+  bookRouter.route('/books').post(controller.post);
 
   return bookRouter;
 };
